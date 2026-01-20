@@ -13,7 +13,8 @@ setup(
     packages=find_packages(),
     python_requires=">=3.8",
     install_requires=[
-        # Add your dependencies here
+        "requests>=2.31.0",
+        "python-dotenv>=1.0.0",
     ],
     extras_require={
         "dev": [
