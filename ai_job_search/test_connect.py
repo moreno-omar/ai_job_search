@@ -9,9 +9,13 @@ load_dotenv()
 api_id = os.getenv("API_ID")
 api_key = os.getenv("API_KEY")
 
+# strings to replace in the URL
+country = "us"
+
 response = requests.get(
-    "https://api.adzuna.com/v1/api/jobs",
-    headers={"Accept": "application/json"}
+    f"https://api.adzuna.com/v1/api/jobs/{country}/categories",
+    headers={"Accept": "application/json"},
+    params={"app_id": api_id, "app_key": api_key},
     )
 
 # If response.json() returns a dict/list:
