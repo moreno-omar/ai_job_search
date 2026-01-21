@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Job Listings - {{ job_count }} Results{% endblock %}
+
+{% block header %}Job Search Results - {{ job_count }} Jobs Found{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            {% for col in columns %}
+            <th>{{ col.replace('_', ' ').title() }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            {% for col in columns %}
+            <td {% if col == 'description' %}class="description"{% endif %}>
+                {% if col == 'redirect_url' %}
+                    <a href="{{ job[col] }}" target="_blank">View Job</a>
+                {% else %}
+                    {{ job[col] if job[col] is not none else 'N/A' }}
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
