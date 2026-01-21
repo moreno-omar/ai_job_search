@@ -1,10 +1,12 @@
 # To test connection between app and adzuna API
 import json
 import os
+from datetime import datetime
 
 import pandas as pd
 import requests
 from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
 
 load_dotenv()
 
@@ -59,3 +61,26 @@ df = df.reindex(columns=new_order)
 output_path = "jobs_flat.csv"
 df.to_csv(output_path, index=False)
 print(f"Wrote {len(df)} rows to {output_path}")
+
+# Render template using existing DataFrame
+jobs = df.to_dict("records")
+columns = df.columns.tolist()
+
+# Setup Jinja environment
+env = Environment(loader=FileSystemLoader("templates"))
+template = env.get_template("jobs_table.html")
+
+# Render to string
+html_output = template.render(
+    jobs=jobs,
+    columns=columns,
+    job_count=len(jobs),
+    generation_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+)
+
+# Write to file
+html_file = "jobs_output.html"
+with open(html_file, "w", encoding="utf-8") as f:
+    f.write(html_output)
+
+print(f"HTML file created: {html_file}")
