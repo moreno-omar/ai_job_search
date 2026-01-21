@@ -67,3 +67,4 @@ env/
 *.tmp
 *.bak
 response.json
+jobs_flat.csv
