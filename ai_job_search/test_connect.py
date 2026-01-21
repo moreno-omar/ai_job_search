@@ -38,17 +38,22 @@ with open("response.json", "w") as f:
 results = data.get("results", [])
 df = pd.json_normalize(results, sep="_")
 
-# Drop metadata-only columns
+# Drop metadata-only and unnecessary columns
 columns_to_drop = [col for col in df.columns if col.endswith("__CLASS__")]
+columns_to_drop.extend(["latitude", "adref", "category_label", "category_tag", "location_area"])
 df = df.drop(columns=columns_to_drop, errors="ignore")
 
-# Split location_area list into separate columns
-if "location_area" in df.columns:
-    area_levels = ("country", "state", "county", "city")
-    for idx, level in enumerate(area_levels):
-        df[f"location_{level}"] = df["location_area"].apply(
-            lambda x: x[idx] if isinstance(x, list) and len(x) > idx else None
-        )
+# Reindex to rearrange columns: company first, then title, salary_min,
+# middle columns, then redirect_url and description at end
+cols = df.columns.tolist()
+cols.remove("company_display_name")
+cols.remove("title")
+cols.remove("salary_min")
+cols.remove("redirect_url")
+cols.remove("description")
+
+new_order = ["company_display_name", "title", "salary_min"] + cols + ["redirect_url", "description"]
+df = df.reindex(columns=new_order)
 
 # Save flattened DataFrame to CSV
 output_path = "jobs_flat.csv"
