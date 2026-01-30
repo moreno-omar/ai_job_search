@@ -2,6 +2,10 @@
 
 A tool for intelligent job searching and analysis using AI.
 
+## AI model
+
+phi3:mini - easy to run on most modest GPUs. Enough reasoning to process text to extract main points.
+
 ## Installation
 
 ```bash
