@@ -60,6 +60,7 @@
         td {
             padding: 10px 12px;
             border-bottom: 1px solid #333;
+            vertical-align: top;
         }
 
         tr:nth-child(even) {
@@ -83,9 +84,10 @@
 
         .description {
             max-width: 400px;
-            overflow: hidden;
+            /* overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            white-space: nowrap; */
+            overflow-wrap: break-word;
         }
 
         footer {
