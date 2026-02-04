@@ -13,13 +13,17 @@ def convert_to_df(data: dict) -> pd.DataFrame:
 
     # Reindex to rearrange columns: company first, then title, salary_min,
     # middle columns, then redirect_url and description at end
-    cols = df.columns.tolist()
-    cols.remove("company_display_name")
-    cols.remove("title")
-    cols.remove("salary_min")
-    cols.remove("redirect_url")
-    cols.remove("description")
+    all_cols = df.columns.tolist()
+    front_columns = ["company_display_name", "title", "salary_min"]
+    end_columns = ["redirect_url", "description"]
 
-    new_order = ["company_display_name", "title", "salary_min"] + cols + ["redirect_url", "description"]
-    df = df.reindex(columns=new_order) 
+    # Middle columns are all columns except those explicitly placed at front or end
+    middle_columns = [c for c in all_cols if c not in front_columns + end_columns]
+
+    new_order = (
+        [c for c in front_columns if c in all_cols]
+        + middle_columns
+        + [c for c in end_columns if c in all_cols]
+    )
+    df = df.reindex(columns=new_order)
     return df
