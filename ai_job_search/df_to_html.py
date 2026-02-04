@@ -8,7 +8,7 @@ def df_to_html(df):
     columns = df.columns.tolist()
 
     # Setup Jinja environment with absolute path to templates
-    # Get the directory containing this file, then go up two levels to reach project root
+    # Get the directory containing this file, then go up one level to reach project root
     current_dir = os.path.dirname(os.path.abspath(__file__))
     templates_dir = os.path.join(os.path.dirname(current_dir), "templates")
     env = Environment(loader=FileSystemLoader(templates_dir))
